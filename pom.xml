@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.example</groupId>
+    <artifactId>apache-http-test-app</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+    <properties>
+        <maven.compiler.source>15</maven.compiler.source>
+        <maven.compiler.target>15</maven.compiler.target>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpcore</artifactId>
+            <version>4.4.14</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.httpcomponents</groupId>
+            <artifactId>httpclient</artifactId>
+            <version>4.5.13</version>
+        </dependency>
+        <dependency>
+            <groupId>io.opentelemetry.javaagent</groupId>
+            <artifactId>opentelemetry-javaagent-tooling</artifactId>
+            <version>1.1.0-alpha</version>
+        </dependency>
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-api</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-sdk</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-exporter-zipkin</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <plugins>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>2.4</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>org.example.CyclicGetter</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                        <configuration>
+                            <shadedArtifactAttached>true</shadedArtifactAttached>
+                            <transformers>
+                                <transformer implementation=
+                                                     "org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+                                    <mainClass>org.example.CyclicGetter</mainClass>
+                                    <manifestEntries>
+                                        <Main-Class>org.example.CyclicGetter</Main-Class>
+                                    </manifestEntries>
+                                </transformer>
+                            </transformers>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>com.example</groupId>
+                <artifactId>dependency-inspector-maven-plugin</artifactId>
+                <version>1.0-SNAPSHOT</version>
+                <configuration>
+                    <agentPath>opentelemetry-javaagent-all.jar</agentPath>
+                </configuration>
+                <executions>
+                    <execution>
+                        <goals>
+                            <goal>dependency-inspection</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <dependencies>
+                    <dependency>
+                        <groupId>net.bytebuddy</groupId>
+                        <artifactId>byte-buddy-dep</artifactId>
+                        <version>1.11.5</version>
+                    </dependency>
+                </dependencies>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
