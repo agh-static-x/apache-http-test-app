@@ -45,6 +45,12 @@
             <version>1.2.0</version>
         </dependency>
 
+        <dependency>
+            <groupId>io.opentelemetry</groupId>
+            <artifactId>opentelemetry-exporter-logging</artifactId>
+            <version>1.2.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>
@@ -91,7 +97,8 @@
                 <artifactId>dependency-inspector-maven-plugin</artifactId>
                 <version>1.0-SNAPSHOT</version>
                 <configuration>
-                    <agentPath>opentelemetry-javaagent-all.jar</agentPath>
+<!--                    <agentPath>opentelemetry-javaagent-all.jar</agentPath>-->
+                    <agentPath>opentelemetry-javaagent-1.1.0-SNAPSHOT-all.jar</agentPath>
                 </configuration>
                 <executions>
                     <execution>

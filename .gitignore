@@ -1,2 +1,4 @@
 /.idea/
 /pkgdiff_reports/
+/INSTRUMENTED_JAR/
+/opentelemetry-javaagent-1.4.0-SNAPSHOT-all.jar
