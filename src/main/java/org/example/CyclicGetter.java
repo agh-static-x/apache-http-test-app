@@ -7,37 +7,13 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-import org.example.otel.AgentClassLoader;
-import org.example.otel.InternalJarUrlHandler;
 
-import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLClassLoader;
+
 
 public class CyclicGetter {
 
-    public static void main(String[] args) throws NoSuchMethodException, InvocationTargetException, IllegalAccessException, InstantiationException, ClassNotFoundException, MalformedURLException {
-
-        File jar = new File("opentelemetry-javaagent-1.1.0-SNAPSHOT-all.jar");
-        URL jarUrl = jar.toURI().toURL();
-
-        ClassLoader jarClassLoader = new URLClassLoader(new URL[]{jarUrl}, CyclicGetter.class.getClassLoader());
-
-        InternalJarUrlHandler internalJarUrlHandler = new InternalJarUrlHandler("inst", jarUrl);
-
-        AgentClassLoader agentClassLoader = new AgentClassLoader(jarUrl, "inst", ClassLoader.getSystemClassLoader());
-        Class<?> loadedClass = agentClassLoader.loadClass("io.opentelemetry.javaagent.instrumentation.apachehttpclient.v4_0.ApacheHttpClientTracer");
-        Thread.currentThread().setContextClassLoader(agentClassLoader); //TODO: check if this line works
-
-        if(loadedClass != null){
-            System.out.println("CLASS LOADED SUCCESSFULLY");
-        }
-
-        //somehow show loaded class to
+    public static void main(String[] args) {
 
         OtelConfig.configureOtel();
 
