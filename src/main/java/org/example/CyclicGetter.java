@@ -14,9 +14,6 @@ import java.io.IOException;
 public class CyclicGetter {
 
     public static void main(String[] args) {
-
-        OtelConfig.configureOtel();
-
         while(true){
             try {
                 makeCall();
